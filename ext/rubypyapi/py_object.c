@@ -265,11 +265,18 @@ VALUE rpIsClass(VALUE self)
 } 
 
 
-VALUE rpIsCallable(VALUE self)
+VALUE rpIsFunction(VALUE self)
 {
 	PyStruct* cself;
 	Data_Get_Struct(self, PyStruct, cself);
-	return PyCallable_Check(cself->pObject) ? Qtrue : Qfalse;
+	return PyFunction_Check(cself->pObject) ? Qtrue : Qfalse;
+} 
+
+VALUE rpIsMethod(VALUE self)
+{
+	PyStruct* cself;
+	Data_Get_Struct(self, PyStruct, cself);
+	return PyMethod_Check(cself->pObject) ? Qtrue : Qfalse;
 } 
 
 inline void Init_RubyPyObject() {
@@ -286,7 +293,8 @@ inline void Init_RubyPyObject() {
 	rb_define_method(cRubyPyObject, "null?", rpIsNull, 0);
 	rb_define_method(cRubyPyObject, "cmp", rpCompare, 1);
 	rb_define_method(cRubyPyObject, "isClass", rpIsClass, 0);
-    rb_define_method(cRubyPyObject, "isCallable", rpIsCallable, 0);
+    rb_define_method(cRubyPyObject, "isFunction", rpIsFunction, 0);
+    rb_define_method(cRubyPyObject, "isMethod", rpIsMethod, 0);
 	rb_define_module_function(cRubyPyObject, "makeTuple", rpMakeTuple, 1);
 	rb_define_module_function(cRubyPyObject, "newList", rpNewList, -2);
 }

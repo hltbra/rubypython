@@ -14,11 +14,15 @@ module RubyPythonBridge2
   def self.import(module_name)
     RubyPythonBridge2::RubyPyModule.new module_name
   end
+  
+  def self.convert_args_to_pytuple(args)
+    args_list = RubyPyApi::PyObject.newList(*args.map{|x| RubyPyApi::PyObject.new x})
+    RubyPyApi::PyObject.makeTuple args_list
+  end
 
   def self.func(module_name, func_name, *args)
-    args_list = RubyPyApi::PyObject.newList(*args.map{|x| RubyPyApi::PyObject.new x})
-    args_tuple = RubyPyApi::PyObject.makeTuple args_list
     start
+    args_tuple = convert_args_to_pytuple args
     modulepy = import module_name
     funcpy = modulepy.getAttr func_name
     result = funcpy.callObject args_tuple
@@ -76,8 +80,7 @@ class RubyPythonBridge2::RubyPyFunction
   end
 
   def call(*args)
-    args_list = RubyPyApi::PyObject.newList(*args.map{|x| RubyPyApi::PyObject.new x})
-    args_tuple = RubyPyApi::PyObject.makeTuple args_list
+    args_tuple = RubyPythonBridge2::convert_args_to_pytuple args
     return @pyobj.callObject(args_tuple).rubify
   end
 end
@@ -85,6 +88,8 @@ end
 class RubyPythonBridge2::RubyPyTypes
   def self.get_type(pyobj, *args)
     return RubyPythonBridge2::RubyPyClass.new pyobj if pyobj.isClass
-    return RubyPythonBridge2::RubyPyFunction.new pyobj if pyobj.isCallable
+    return RubyPythonBridge2::RubyPyFunction.new pyobj if pyobj.isFunction or
+                                                          pyobj.isMethod or
+                                                          !pyobj.hasAttr('__dict__')
   end
 end
