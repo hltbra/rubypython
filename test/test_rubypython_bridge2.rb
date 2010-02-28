@@ -74,20 +74,20 @@ class TestRubyPythonBridge2WithCPickle < Test::Unit::TestCase
     assert(@cPickle.respond_to?(:loads),
            "Ruby respond to method not working on wrapped module.")
   end
-#  
-#  def test_data_passing
-#    assert_equal({"a"=>"n", [1, "2"]=>4},
-#                 @cPickle.loads( "(dp1\nS'a'\nS'n'\ns(I1\nS'2'\ntp2\nI4\ns."),
-#                 "Data returned from wrapped cPickle is incorrect." )
-#    
-#    orig_array = [1,2,3,4]
-#    dumped_array = @cPickle.dumps(orig_array)
-#    
-#    assert_equal(orig_array,
-#                 @cPickle.loads(dumped_array),
-#                 "Array returned from cPickle is not equivalent to input array.")
-#  end
-#  
+  
+  def test_data_passing
+    assert_equal({"a"=>"n", [1, "2"]=>4},
+                 @cPickle.loads( "(dp1\nS'a'\nS'n'\ns(I1\nS'2'\ntp2\nI4\ns."),
+                 "Data returned from wrapped cPickle is incorrect." )
+    
+    orig_array = [1,2,3,4]
+    dumped_array = @cPickle.dumps(orig_array)
+    
+    assert_equal(orig_array,
+                 @cPickle.loads(dumped_array),
+                 "Array returned from cPickle is not equivalent to input array.")
+  end
+  
 #  def test_unknown_method
 #    assert_raise(NoMethodError, "Missing method failed to raise NoMethodError") do
 #      @cPickle.splack

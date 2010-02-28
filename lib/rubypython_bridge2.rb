@@ -73,9 +73,17 @@ class RubyPythonBridge2::RubyPyInstance
 #  end
 end
 
+class RubyPythonBridge2::RubyPyFunction
+  def self.create_rubypy_obj(pyobj, *args)
+    args_list = RubyPyApi::PyObject.newList(*args.map{|x| RubyPyApi::PyObject.new x})
+    args_tuple = RubyPyApi::PyObject.makeTuple args_list
+    return pyobj.callObject(args_tuple).rubify
+  end
+end
 
 class RubyPythonBridge2::RubyPyObjectFactory
   def self.create(pyobj, *args)
-    RubyPythonBridge2::RubyPyClass.create_rubypy_obj(pyobj, *args) if pyobj.isClass
+    return RubyPythonBridge2::RubyPyClass.create_rubypy_obj(pyobj, *args) if pyobj.isClass
+    return RubyPythonBridge2::RubyPyFunction.create_rubypy_obj(pyobj, *args) if pyobj.isCallable
   end
 end
