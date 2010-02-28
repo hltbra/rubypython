@@ -27,7 +27,7 @@ if(!system("which python-config"))
   exit -1
 end
 
-unless find_library("python2.6",nil)||find_library("python2.5",nil)||find_library("python2.4",nil)
+unless find_library("python2.5",nil)||find_library("python2.4",nil)
   puts "Could not find python libraries"
   exit -1
 end
