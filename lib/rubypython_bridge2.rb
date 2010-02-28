@@ -37,16 +37,35 @@ class RubyPythonBridge2::RubyPyModule
   def getAttr(attrname)
     @module.getAttr attrname
   end
-
-  def Request(*args)
-    args.empty? ? RubyPythonBridge2::RubyPyClass.new : RubyPythonBridge2::RubyPyInstance.new
+  
+  def method_missing(meth_name, *args)
+    attr_obj = @module.getAttr meth_name.to_s
+    RubyPythonBridge2::RubyPyObjectFactory.create(attr_obj, *args)
   end
 end
 
 
 class RubyPythonBridge2::RubyPyClass
+  def initialize(pyobj)
+
+  end
+
+  def self.create2factory(pyobj, *args)
+    if args.empty?
+      self.new pyobj
+    else
+      RubyPythonBridge2::RubyPyInstance.new
+    end
+  end
 end
 
 
 class RubyPythonBridge2::RubyPyInstance
+end
+
+
+class RubyPythonBridge2::RubyPyObjectFactory
+  def self.create(pyobj, *args)
+    RubyPythonBridge2::RubyPyClass.create2factory(pyobj, *args) if pyobj.isClass
+  end
 end

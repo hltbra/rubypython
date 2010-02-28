@@ -252,21 +252,35 @@ VALUE rpNewList(VALUE klass, VALUE rbArray) {
 
 }
   
+VALUE rpIsClass(VALUE self)
+{
+	PyStruct* cself;
+	PyObject* pyObject;
+	Data_Get_Struct(self, PyStruct, cself);
+	pyObject = cself->pObject;
+	return (PyFunction_Check(pyObject) ||
+			PyMethod_Check(pyObject) ||
+			!PyObject_HasAttrString(pyObject, "__dict__") ||
+			PyInstance_Check(pyObject)) ? Qfalse : Qtrue;
+} 
+
 
 
 inline void Init_RubyPyObject() {
 	cRubyPyObject = rb_define_class_under(mRubyPyApi,"PyObject", rb_cObject);
 	rb_define_alloc_func(cRubyPyObject, PyStructAlloc);
-	rb_define_method(cRubyPyObject, "initialize", &PyStructInit, 1);
-	rb_define_method(cRubyPyObject, "rubify", &rpRubify, 0);
-	rb_define_method(cRubyPyObject, "hasAttr", &rpHasAttr, 1);
-	rb_define_method(cRubyPyObject, "getAttr", &rpGetAttr, 1);
-	rb_define_method(cRubyPyObject, "setAttr", &rpSetAttr, 2);
-	rb_define_method(cRubyPyObject, "callObject", &rpCallObject, 1);
-	rb_define_method(cRubyPyObject, "xDecref", &rpXDECREF, 0);
-	rb_define_method(cRubyPyObject, "xIncref", &rpXINCREF, 0);
-	rb_define_method(cRubyPyObject, "null?", &rpIsNull, 0);
-	rb_define_method(cRubyPyObject, "cmp", &rpCompare, 1);
-	rb_define_module_function(cRubyPyObject, "makeTuple", &rpMakeTuple, 1);
-	rb_define_module_function(cRubyPyObject, "newList", &rpNewList, -2);
+	rb_define_method(cRubyPyObject, "initialize", PyStructInit, 1);
+	rb_define_method(cRubyPyObject, "rubify", rpRubify, 0);
+	rb_define_method(cRubyPyObject, "hasAttr", rpHasAttr, 1);
+	rb_define_method(cRubyPyObject, "getAttr", rpGetAttr, 1);
+	rb_define_method(cRubyPyObject, "setAttr", rpSetAttr, 2);
+	rb_define_method(cRubyPyObject, "callObject", rpCallObject, 1);
+	rb_define_method(cRubyPyObject, "xDecref", rpXDECREF, 0);
+	rb_define_method(cRubyPyObject, "xIncref", rpXINCREF, 0);
+	rb_define_method(cRubyPyObject, "null?", rpIsNull, 0);
+	rb_define_method(cRubyPyObject, "cmp", rpCompare, 1);
+	rb_define_method(cRubyPyObject, "isClass", rpIsClass, 0);
+	rb_define_module_function(cRubyPyObject, "makeTuple", rpMakeTuple, 1);
+	rb_define_module_function(cRubyPyObject, "newList", rpNewList, -2);
 }
+
