@@ -256,9 +256,9 @@ VALUE rpNewList(VALUE klass, VALUE rbArray) {
 
 inline void Init_RubyPyObject() {
 	cRubyPyObject = rb_define_class_under(mRubyPyApi,"PyObject", rb_cObject);
-        rb_define_alloc_func(cRubyPyObject, PyStructAlloc);
+	rb_define_alloc_func(cRubyPyObject, PyStructAlloc);
 	rb_define_method(cRubyPyObject, "initialize", &PyStructInit, 1);
-        rb_define_method(cRubyPyObject, "rubify", &rpRubify, 0);
+	rb_define_method(cRubyPyObject, "rubify", &rpRubify, 0);
 	rb_define_method(cRubyPyObject, "hasAttr", &rpHasAttr, 1);
 	rb_define_method(cRubyPyObject, "getAttr", &rpGetAttr, 1);
 	rb_define_method(cRubyPyObject, "setAttr", &rpSetAttr, 2);
