@@ -94,18 +94,18 @@ class TestRubyPythonBridge2WithCPickle < Test::Unit::TestCase
     end
   end
   
-#  def test_class_wrapping
-#    assert_instance_of(RubyPythonBridge2::RubyPyClass,
-#                       @cPickle.PicklingError,
-#                       "Wrapped class is not an instance of RubyPyClass.")
-#  end
-#  
-#  def test_module_wrapping
-#    assert_instance_of(RubyPythonBridge2::RubyPyModule,
-#                       @cPickle,
-#                       "Wrapped module is not of class RubyPyModule.")
-#  end
-#  
+  def test_class_wrapping
+    assert_instance_of(RubyPythonBridge2::RubyPyClass,
+                       @cPickle.PicklingError,
+                       "Wrapped class is not an instance of RubyPyClass.")
+  end
+ 
+  def test_module_wrapping
+    assert_instance_of(RubyPythonBridge2::RubyPyModule,
+                       @cPickle,
+                       "Wrapped module is not of class RubyPyModule.")
+  end
+  
 end
 #
 #
