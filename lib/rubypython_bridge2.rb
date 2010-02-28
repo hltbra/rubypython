@@ -40,7 +40,12 @@ class RubyPythonBridge2::RubyPyModule
   
   def method_missing(meth_name, *args)
     attr_obj = @module.getAttr meth_name.to_s
-    RubyPythonBridge2::RubyPyObjectFactory.create(attr_obj, *args)
+    rubypy_type = RubyPythonBridge2::RubyPyTypes.get_type attr_obj
+    if args.empty?
+      rubypy_type
+    else
+      rubypy_type.call(*args)
+    end
   end
 
   def respond_to?(meth_name)
@@ -54,36 +59,32 @@ class RubyPythonBridge2::RubyPyClass
     @pyobj = pyobj
   end
 
-  def self.create_rubypy_new_instance
-      RubyPythonBridge2::RubyPyInstance.new
-  end
-
-  def self.create_rubypy_obj(pyobj, *args)
-    if args.empty?
-      RubyPythonBridge2::RubyPyClass.new pyobj
-    else
-      self.create_rubypy_new_instance
-    end
+  def call(*args)
+      RubyPythonBridge2::RubyPyInstance.new(*args)
   end
 end
 
 
 class RubyPythonBridge2::RubyPyInstance
-#  def initialize(pyobj, *params)
-#  end
-end
-
-class RubyPythonBridge2::RubyPyFunction
-  def self.create_rubypy_obj(pyobj, *args)
-    args_list = RubyPyApi::PyObject.newList(*args.map{|x| RubyPyApi::PyObject.new x})
-    args_tuple = RubyPyApi::PyObject.makeTuple args_list
-    return pyobj.callObject(args_tuple).rubify
+  def initialize(*args)
   end
 end
 
-class RubyPythonBridge2::RubyPyObjectFactory
-  def self.create(pyobj, *args)
-    return RubyPythonBridge2::RubyPyClass.create_rubypy_obj(pyobj, *args) if pyobj.isClass
-    return RubyPythonBridge2::RubyPyFunction.create_rubypy_obj(pyobj, *args) if pyobj.isCallable
+class RubyPythonBridge2::RubyPyFunction
+  def initialize(pyobj)
+    @pyobj = pyobj
+  end
+
+  def call(*args)
+    args_list = RubyPyApi::PyObject.newList(*args.map{|x| RubyPyApi::PyObject.new x})
+    args_tuple = RubyPyApi::PyObject.makeTuple args_list
+    return @pyobj.callObject(args_tuple).rubify
+  end
+end
+
+class RubyPythonBridge2::RubyPyTypes
+  def self.get_type(pyobj, *args)
+    return RubyPythonBridge2::RubyPyClass.new pyobj if pyobj.isClass
+    return RubyPythonBridge2::RubyPyFunction.new pyobj if pyobj.isCallable
   end
 end
