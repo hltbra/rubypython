@@ -42,30 +42,40 @@ class RubyPythonBridge2::RubyPyModule
     attr_obj = @module.getAttr meth_name.to_s
     RubyPythonBridge2::RubyPyObjectFactory.create(attr_obj, *args)
   end
+
+  def respond_to?(meth_name)
+    @module.hasAttr(meth_name.to_s)
+  end
 end
 
 
 class RubyPythonBridge2::RubyPyClass
   def initialize(pyobj)
-
+    @pyobj = pyobj
   end
 
-  def self.create2factory(pyobj, *args)
-    if args.empty?
-      self.new pyobj
-    else
+  def self.create_rubypy_new_instance
       RubyPythonBridge2::RubyPyInstance.new
+  end
+
+  def self.create_rubypy_obj(pyobj, *args)
+    if args.empty?
+      RubyPythonBridge2::RubyPyClass.new pyobj
+    else
+      self.create_rubypy_new_instance
     end
   end
 end
 
 
 class RubyPythonBridge2::RubyPyInstance
+#  def initialize(pyobj, *params)
+#  end
 end
 
 
 class RubyPythonBridge2::RubyPyObjectFactory
   def self.create(pyobj, *args)
-    RubyPythonBridge2::RubyPyClass.create2factory(pyobj, *args) if pyobj.isClass
+    RubyPythonBridge2::RubyPyClass.create_rubypy_obj(pyobj, *args) if pyobj.isClass
   end
 end

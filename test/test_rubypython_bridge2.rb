@@ -37,7 +37,7 @@ class TestRubyPythonBridge2Extn2 < Test::Unit::TestCase
     
     RubyPythonBridge2.stop
   end
-#  
+  
 #  def test_new_instance_with_new_method
 #    RubyPythonBridge2.start
 #    
@@ -47,32 +47,33 @@ class TestRubyPythonBridge2Extn2 < Test::Unit::TestCase
 #                       urllib2.Request,
 #                       "Wrapped Python class not of correct type.")
 #    
+  ######    Would ``new`` method be nice? isn't it that common? ######
 #    assert_instance_of(RubyPythonBridge2::RubyPyInstance,
 #                       urllib2.Request.new("google.com"),
 #                       "New call misbehaving of wrapped class.")
 #    
 #    RubyPythonBridge2.stop
 #  end
-#  
-#end
-#
-#class TestRubyPythonBridge2WithCPickle < Test::Unit::TestCase
-#  def setup
-#    RubyPythonBridge2.start
-#    @cPickle=RubyPythonBridge2.import "cPickle"
-#  end
-#  
-#  def teardown
+  
+end
+
+class TestRubyPythonBridge2WithCPickle < Test::Unit::TestCase
+  def setup
+    RubyPythonBridge2.start
+    @cPickle = RubyPythonBridge2.import "cPickle"
+  end
+  
+  def teardown
 #    ObjectSpace.each_object(RubyPythonBridge2::RubyPyObject) do |o|
 #      o.free_pobj
 #    end
-#    RubyPythonBridge2.stop
-#  end
-#  
-#  def test_mod_respond_to
-#    assert(@cPickle.respond_to?(:loads),
-#           "Ruby respond to method not working on wrapped module.")
-#  end
+    RubyPythonBridge2.stop
+  end
+  
+  def test_mod_respond_to
+    assert(@cPickle.respond_to?(:loads),
+           "Ruby respond to method not working on wrapped module.")
+  end
 #  
 #  def test_data_passing
 #    assert_equal({"a"=>"n", [1, "2"]=>4},
@@ -105,7 +106,7 @@ class TestRubyPythonBridge2Extn2 < Test::Unit::TestCase
 #                       "Wrapped module is not of class RubyPyModule.")
 #  end
 #  
-#end
+end
 #
 #
 #class TestRubyPythonBridge2WithUrllib2 < Test::Unit::TestCase
@@ -129,5 +130,5 @@ class TestRubyPythonBridge2Extn2 < Test::Unit::TestCase
 #    assert(@urllib2.Request.new("google.com").respond_to? :get_data)
 #  end
 #  
-end
+#end
 
