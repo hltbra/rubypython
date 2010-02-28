@@ -88,12 +88,12 @@ class TestRubyPythonBridge2WithCPickle < Test::Unit::TestCase
                  "Array returned from cPickle is not equivalent to input array.")
   end
   
-#  def test_unknown_method
-#    assert_raise(NoMethodError, "Missing method failed to raise NoMethodError") do
-#      @cPickle.splack
-#    end
-#  end
-#  
+  def test_unknown_method
+    assert_raise(NoMethodError, "Missing method failed to raise NoMethodError") do
+      @cPickle.splack
+    end
+  end
+  
 #  def test_class_wrapping
 #    assert_instance_of(RubyPythonBridge2::RubyPyClass,
 #                       @cPickle.PicklingError,

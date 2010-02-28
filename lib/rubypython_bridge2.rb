@@ -43,6 +43,7 @@ class RubyPythonBridge2::RubyPyModule
   end
   
   def method_missing(meth_name, *args)
+    raise NoMethodError if !@module.hasAttr(meth_name.to_s)
     attr_obj = @module.getAttr meth_name.to_s
     rubypy_type = RubyPythonBridge2::RubyPyTypes.get_type attr_obj
     if args.empty?
