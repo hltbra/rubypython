@@ -21,22 +21,22 @@ class TestRubyPythonBridge2Extn2 < Test::Unit::TestCase
     
     assert(!RubyPythonBridge2.stop, "Interpreter ran into trouble while halting.")
   end
-#  
-#  def test_new_instance
-#    RubyPythonBridge2.start
-#    
-#    urllib2 = RubyPythonBridge2.import "urllib2"
-#    
-#    assert_instance_of(RubyPythonBridge2::RubyPyClass,
-#                       urllib2.Request,
-#                       "Wrapped Python class not of correct type.")
-#    
-#    assert_instance_of(RubyPythonBridge2::RubyPyInstance,
-#                       urllib2.Request("google.com"),
-#                       "Wrapped python instance not of correct type.")
-#    
-#    RubyPythonBridge2.stop
-#  end
+  
+  def test_new_instance
+    RubyPythonBridge2.start
+    
+    urllib2 = RubyPythonBridge2.import "urllib2"
+    
+    assert_instance_of(RubyPythonBridge2::RubyPyClass,
+                       urllib2.Request,
+                       "Wrapped Python class not of correct type.")
+    
+    assert_instance_of(RubyPythonBridge2::RubyPyInstance,
+                       urllib2.Request("google.com"),
+                       "Wrapped python instance not of correct type.")
+    
+    RubyPythonBridge2.stop
+  end
 #  
 #  def test_new_instance_with_new_method
 #    RubyPythonBridge2.start
