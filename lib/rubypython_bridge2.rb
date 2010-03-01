@@ -67,6 +67,10 @@ class RubyPythonBridge2::RubyPyClass
   def call(*args)
       RubyPythonBridge2::RubyPyInstance.new(*args)
   end
+
+  def respond_to?(meth_name)
+    @pyobj.hasAttr(meth_name.to_s)
+  end
 end
 
 

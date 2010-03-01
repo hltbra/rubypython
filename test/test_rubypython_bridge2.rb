@@ -107,28 +107,28 @@ class TestRubyPythonBridge2WithCPickle < Test::Unit::TestCase
   end
   
 end
-#
-#
-#class TestRubyPythonBridge2WithUrllib2 < Test::Unit::TestCase
-#  def setup
-#    RubyPythonBridge2.start
-#    @urllib2=RubyPythonBridge2.import "urllib2"
-#  end
+
+
+class TestRubyPythonBridge2WithUrllib2 < Test::Unit::TestCase
+  def setup
+    RubyPythonBridge2.start
+    @urllib2 = RubyPythonBridge2.import "urllib2"
+  end
 #  
-#  def teardown
+  def teardown
 #    ObjectSpace.each_object(RubyPythonBridge2::RubyPyObject) do |o|
 #      o.free_pobj
 #    end
-#    RubyPythonBridge2.stop
-#  end
+    RubyPythonBridge2.stop
+  end
 #  
-#  def test_class_respond_to
-#    assert(@urllib2.Request.respond_to? :get_data)
-#  end
-#  
+  def test_class_respond_to
+    assert(@urllib2.Request.respond_to? :get_data)
+  end
+  
 #  def test_instance_respond_to
 #    assert(@urllib2.Request.new("google.com").respond_to? :get_data)
 #  end
 #  
-#end
+end
 
