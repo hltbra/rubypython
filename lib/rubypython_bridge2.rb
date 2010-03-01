@@ -65,7 +65,7 @@ class RubyPythonBridge2::RubyPyClass
   end
 
   def call(*args)
-      RubyPythonBridge2::RubyPyInstance.new(*args)
+      RubyPythonBridge2::RubyPyInstance.new(@pyobj, *args)
   end
 
   def respond_to?(meth_name)
@@ -75,7 +75,12 @@ end
 
 
 class RubyPythonBridge2::RubyPyInstance
-  def initialize(*args)
+  def initialize(pyobj, *args)
+    @pyobj = pyobj
+  end
+
+  def respond_to?(meth_name)
+    @pyobj.hasAttr(meth_name.to_s)
   end
 end
 

@@ -121,14 +121,14 @@ class TestRubyPythonBridge2WithUrllib2 < Test::Unit::TestCase
 #    end
     RubyPythonBridge2.stop
   end
-#  
+
   def test_class_respond_to
     assert(@urllib2.Request.respond_to? :get_data)
   end
   
-#  def test_instance_respond_to
-#    assert(@urllib2.Request.new("google.com").respond_to? :get_data)
-#  end
-#  
+  def test_instance_respond_to
+    assert(@urllib2.Request("google.com").respond_to? :get_data)
+  end
+  
 end
 
